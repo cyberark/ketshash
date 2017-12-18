@@ -1,7 +1,7 @@
 # Ketshash
 Script for detecting suspicious privileged NTLM connecions, in particular Pass-The-Hash attack, based on event viewer logs.
 
-The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in [TODO]the blog post: https://www.cyberark.com/
+The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in the blog post: https://www.cyberark.com/
 
 # Requirements
 - Privileges to get event viewer logs from remote machines
@@ -20,8 +20,11 @@ The tool queries given computers to be monitored, computers that connected to th
 	- `Invoke-DetectPTH <arguments>`
 
 ### Ketshash Runner
+-	Make sure Ketshash.ps1 is in the same directory of KetshashRunner.exe
 -	Double click on KetshashRunner.exe, change settings if you need and press Run
-        ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashRunnerGif.gif?token=ALcWEPkXJpNK_dv8CYnGkg0Za2oODfZAks5aQO5ewA%3D%3D)
+
+![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashRunnerGif.gif?token=ALcWEPkXJpNK_dv8CYnGkg0Za2oODfZAks5aQO5ewA%3D%3D)
+	
 ## Invoke-DetectPTH
 ##### Parameters:
 * __TargetComputers__ - Array of target computers to detect for NTLM connections.  
