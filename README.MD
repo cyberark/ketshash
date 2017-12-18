@@ -20,7 +20,8 @@ The tool queries given computers to be monitored, computers that connected to th
 	- `Invoke-DetectPTH <arguments>`
 
 ### Ketshash Runner
--	Double click on KetshashRunner.exe, change settings if you need and press Run
+-	Make sure Ketshash.ps1 is in the same directory of KetshashRunner.exe
+-       Double click on KetshashRunner.exe, change settings if you need and press Run
         ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashRunnerGif.gif?token=ALcWEPkXJpNK_dv8CYnGkg0Za2oODfZAks5aQO5ewA%3D%3D)
 ## Invoke-DetectPTH
 ##### Parameters:
