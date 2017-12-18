@@ -16,7 +16,7 @@ The tool queries given computers to be monitored, computers that connected to th
 # Usage
 ### Basic Usage
 -	Open PowerShell and run:
-	- `Import-Module .\Ketshash.ps1`
+	- `Import-Module .\Ketshash.ps1` or copy & paste Ketshash.ps1 content to PowerShell session
 	- `Invoke-DetectPTH <arguments>`
 
 ### Ketshash Runner
