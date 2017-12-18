@@ -41,8 +41,8 @@ On Windows 10 and Server 2016, enabling "kerenl object audity" will provide more
 
 ##### Example:
 `Invoke-DetectPTH -TargetComputers "ComputerName" -StartTime ([datetime]"2017-12-14 12:50:00 PM") -LogFile "C:\tmp\log.txt" -UseKerberosCheck -UseNewCredentialsCheck`
+        ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot.PNG?token=ALcWEG05x1Vo_c5Ac6mLwzHnYlDzp41Qks5aQO5NwA%3D%3D)
 
-https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot.PNG?token=ALcWEG05x1Vo_c5Ac6mLwzHnYlDzp41Qks5aQO5NwA%3D%3D
 
 # References:
 For more comments and questions, you can contact Eviatar Gerzi (@g3rzi) and CyberArk Labs.
