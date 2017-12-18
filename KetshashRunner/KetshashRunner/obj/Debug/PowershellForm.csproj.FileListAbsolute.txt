@@ -1,0 +1,12 @@
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\bin\Debug\PowershellForm.exe.config
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\bin\Debug\PowershellForm.exe
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\bin\Debug\PowershellForm.pdb
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\obj\Debug\PowershellForm.csprojResolveAssemblyReference.cache
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\obj\Debug\PowershellForm.Form1.resources
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\obj\Debug\PowershellForm.Properties.Resources.resources
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\obj\Debug\PowershellForm.csproj.GenerateResource.Cache
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\obj\Debug\PowershellForm.exe
+c:\users\eviatar\documents\visual studio 2015\Projects\PowershellForm\PowershellForm\obj\Debug\PowershellForm.pdb
+C:\Users\eviatar\Desktop\Git\PassTheHashDetection\ExecuterForm\PowershellForm\bin\Debug\PowershellForm.exe.config
+C:\Users\eviatar\Desktop\Git\PassTheHashDetection\ExecuterForm\PowershellForm\obj\Debug\PowershellForm.exe
+C:\Users\eviatar\Desktop\Git\PassTheHashDetection\ExecuterForm\PowershellForm\obj\Debug\PowershellForm.pdb
