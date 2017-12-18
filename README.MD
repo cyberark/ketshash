@@ -21,7 +21,7 @@ The tool queries given computers to be monitored, computers that connected to th
 
 ### Ketshash Runner
 -	Double click on KetshashRunner.exe, change settings if you need and press Run
- ![alt text](https://raw.githubusercontent.com/Ketshash/Media/KetshashRunnerGif.gif)
+ ![alt text](https://raw.githubusercontent.com/Cyberark/Ketshash/Media/KetshashRunnerGif.gif)
 ## Invoke-DetectPTH
 ##### Parameters:
 * __TargetComputers__ - Array of target computers to detect for NTLM connections.  
