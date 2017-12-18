@@ -1,7 +1,7 @@
 # Ketshash
 Script for detecting suspicious privileged NTLM connecions, in particular Pass-The-Hash attack, based on event viewer logs.
 
-The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in [TODO]the blog post: https://www.cyberark.com/
+The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in the blog post: https://www.cyberark.com/
 
 # Requirements
 - Privileges to get event viewer logs from remote machines
