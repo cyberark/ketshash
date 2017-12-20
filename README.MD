@@ -15,6 +15,9 @@ Ketshash is a tool for detecting suspicious privileged NTLM connections, based o
 - Security event logs on the monitored machines (Login events)
 - Authentication events from Active Directory
 
+This tool was tested successfully on small lab environment.   
+Untill it will be checked on large environment, running this tool on large production environment is on your responsibility.  
+
 # Usage
 There are two options: 
 ### Basic Usage
