@@ -1,5 +1,5 @@
 # Ketshash
-A little tool for detecting suspicious privileged NTLM connecions, in particular Pass-The-Hash attack, based on event viewer logs.
+A little tool for detecting suspicious privileged NTLM connections, in particular Pass-The-Hash attack, based on event viewer logs.
 
 The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in the blog post: https://www.cyberark.com/threat-research-blog/detecting-pass-the-hash-with-windows-event-viewer
 
@@ -37,12 +37,12 @@ There are two options:
 The default is to search for legitimate logon on the source machine. 
 Anyway, with or without this switch there is still a query for event ID 4648 on the source machine.
 * __UseNewCredentialsCheck__ - Checks for logon events with logon type 9 (like Mimikatz). 
-This is optional, the default algoritm already covers it. 
-It is exist just to show another option to detect suspicious NTLM connections.
-On Windows versions below Windows 10 and Server 2016, "Microsoft-Windows-LSA/Operational" should be enabled in event viewer.
-On Windows 10 and Server 2016, enabling "kerenl object audity" will provide more accurate information such as writing to LSASS.
+This is optional, the default algorithm already covers it. 
+It exists just to show another option to detect suspicious NTLM connections.
+On the Windows versions 10 and Server 2016, "Microsoft-Windows-LSA/Operational" should be enabled in event viewer.
+On Windows 10 and Server 2016, enabling "kernel object auditing" will provide more accurate information such as writing to LSASS.
 * __LogFile__ - Log file path to save the results.
-* __MaxHoursOfLegitLogonPriorToNTLMEvent__ - How much hours to look backwards and search for legitimate logon from the time of the NTLM event. The default is 2 hours backwards. 
+* __MaxHoursOfLegitLogonPriorToNTLMEvent__ - How many hours to look backwards and search for legitimate logon from the time of the NTLM event. The default is 2 hours backwards. 
 
 
 ##### Example (recommended):
