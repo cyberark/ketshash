@@ -48,6 +48,11 @@ On Windows 10 and Server 2016, enabling "kerenl object audity" will provide more
 * __MaxHoursOfLegitLogonPriorToNTLMEvent__ - How much hours to look backwards and search for legitimate logon from the time of the NTLM event. The default is 2 hours backwards. 
 
 
+##### Example (recommended):
+`Invoke-DetectPTH -TargetComputers "MARS-7" -LogFile "C:\tmp\log.txt"`
+![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot2.PNG?token=ALcWEKLGgMtw2Io8afFyo7gm8d8ysSXXks5aQ8ITwA%3D%3D)
+
+
 ##### Example:
 `Invoke-DetectPTH -TargetComputers "ComputerName" -StartTime ([datetime]"2017-12-14 12:50:00 PM") -LogFile "C:\tmp\log.txt" -UseKerberosCheck -UseNewCredentialsCheck`
 
