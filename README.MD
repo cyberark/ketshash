@@ -1,17 +1,19 @@
 # Ketshash
-Script for detecting suspicious privileged NTLM connecions, in particular Pass-The-Hash attack, based on event viewer logs.
+A little tool for detecting suspicious privileged NTLM connecions, in particular Pass-The-Hash attack, based on event viewer logs.
 
 The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in the blog post: https://www.cyberark.com/
 
 # Requirements
-- Privileges to get event viewer logs from remote machines
-- Privileges to retrive information about the user and the machine from Active Directory
+Account with the following privileges:
+- Access to remote machines' security event logs
+- ActiveDirectory read permissions (standard domain account)
 - Computers synchronized with the same time, otherwise it can affect the results
 - Minimum PowerShell 2.0  
 
 # Overview
-Ketshash is a tool for detecting suspicious privileged NTLM connections.
-The tool queries given computers to be monitored, computers that connected to the given computers and also Active Directory (AD) to get information about these computers.
+Ketshash is a tool for detecting suspicious privileged NTLM connections, based on the following information:
+- Security event logs on the monitored machines (Login events)
+- Authentication events from Active Directory
 
 # Usage
 ### Basic Usage
@@ -29,7 +31,7 @@ The tool queries given computers to be monitored, computers that connected to th
 ##### Parameters:
 * __TargetComputers__ - Array of target computers to detect for NTLM connections.  
 * __TargetComputersFile__ - Path to file with list of target computers to detect for NTLM connections.
-* __StartTime__ - Time when the detection starts. The defualt is from the time this function starts.  The default is the current time.
+* __StartTime__ - Time when the detection starts. The default is the current time.
 * __UseKerberosCheck__ - Checks for TGT\TGS logons on the DCs on the organization. 
 The default is to search for legitimate logon on the source machine. 
 Anyway, with or without this switch there is still a query for event ID 4648 on the source machine.
