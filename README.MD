@@ -16,6 +16,7 @@ Ketshash is a tool for detecting suspicious privileged NTLM connections, based o
 - Authentication events from Active Directory
 
 # Usage
+There are two options: 
 ### Basic Usage
 -	Open PowerShell and run:
 	- `Import-Module .\Ketshash.ps1` or copy & paste Ketshash.ps1 content to PowerShell session
