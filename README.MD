@@ -55,8 +55,6 @@ On Windows 10 and Server 2016, enabling "kernel object auditing" will provide mo
 
 ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot.PNG?token=ALcWEG05x1Vo_c5Ac6mLwzHnYlDzp41Qks5aQO5NwA%3D%3D)
 
-# Demo:
- [![demo](https://github.com/cyberark/ketshash/blob/master/Media/DemoThumbline.PNG?raw=true)](https://fast.wistia.com/embed/iframe/e9px19i61p)
  
 # References:
 For more comments and questions, you can contact Eviatar Gerzi (@g3rzi) and CyberArk Labs.
