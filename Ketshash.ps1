@@ -1050,8 +1050,8 @@ function Invoke-DetectPTH(){
 "@
 
 	Write-Host $AsciiName -ForegroundColor Green
-	Write-Host "[*] Version 1.2"
-	Write-Host "[*] Last update: 17.12.2017"
+	Write-Host "[*] Version 1.3"
+	Write-Host "[*] Last update: 31.12.2017"
 	Write-Host "[*] To stop press Ctrl+Z and choose 'Yes' on the pop up Window. It will terminate all the opened threads.`n"
 	}
 	
