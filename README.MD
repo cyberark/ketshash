@@ -61,7 +61,7 @@ Because it uses threads, it is not possible to debug the script block of the mai
 A workaround can be by using Invoke-Command before the Detect-PTHMultithreaded:  
 `Invoke-Command -ScriptBlock $detectPTHScriptBlock -ArgumentList $TargetComputers, $startTime, $LogFile, $UseKerberosCheck, $UseNewCredentialsCheck, $MaxHoursOfLegitLogonPriorToNTLMEvent`
 
-Detect only one target computer:
+Detect only one target computer:  
 `Invoke-DetectPTH -TargetComputers "<computer_name>" ...`
 
 Change the `$TargetComputer` to be `[string]` instead of `[array]`.
