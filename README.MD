@@ -56,7 +56,7 @@ On Windows 10 and Server 2016, enabling "kernel object auditing" will provide mo
 ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot.PNG?token=ALcWEG05x1Vo_c5Ac6mLwzHnYlDzp41Qks5aQO5NwA%3D%3D)
 
  
-##### Debugging:
+## Debugging:
 Because it uses threads, it is not possible to debug the script block of the main function.
 A workaround can be by using Invoke-Command before the Detect-PTHMultithreaded:  
 `Invoke-Command -ScriptBlock $detectPTHScriptBlock -ArgumentList $TargetComputers, $startTime, $LogFile, $UseKerberosCheck, $UseNewCredentialsCheck, $MaxHoursOfLegitLogonPriorToNTLMEvent`
