@@ -4,6 +4,11 @@ function Invoke-DetectPTH(){
 	Using event viewer to detect suspicious privileged NTLM connections such as Pass-the-Hash
 	Author: Eviatar Gerzi (@g3rzi)
 
+	Version 1.4: 4.1.2018
+		- Added function to get the current time from a remote machine.
+		- Modified the detection function to use the current date of the remote machine with the use of stopwatch.
+		- Added try\catch to timing functions
+
 	Version 1.3: 31.12.2017
 		- Increased the time for checking 4648 to 60 seconds instead of 5.
 		- Increased the difference time warning notification between machines to 60 seconds.
@@ -416,6 +421,7 @@ function Invoke-DetectPTH(){
 				}
 			}
 			else{ 
+				# TODO: Check time differences in the DC
 				if($isLegit = Is-LegitKerberosLogon $ntlmEventObject){
 					($ntlmDetailsSb.value).AppendLine("$($global:Tab)[*] Found legit TGT\TGS ticket prior to this connection")
 				}
@@ -473,8 +479,26 @@ function Invoke-DetectPTH(){
 
 		function Is-UsingExplicityPassword($ntlmObject){
 			$isUsingExplicityPassword = $false
+			$timeDiff = Get-TimeDifferenceBetweenComputers $ntlmObject.DestinationWorkstation $ntlmObject.WorkstationName
+			
+			if($timeDiff -eq $null)
+			{
+				$syncedTimeOnSourceMachine = ([datetime]($ntlmObject.Time))
+			}
+			else
+			{			
+				if($timeDiff -gt 0){
+					$timeDiff = $timeDiff * (-1)
+				}
+				
+				$syncedTimeOnSourceMachine = ([datetime]($ntlmObject.Time)).AddSeconds($timeDiff)
+			}
+			
+			$timeOf4648PriorToNTLM = $syncedTimeOnSourceMachine.AddSeconds($global:MAX_SECONDS_PRIOR_NTLM_EVENT)
+			$timeOf4648AfterNTLM = $syncedTimeOnSourceMachine.AddSeconds($global:MAX_SECONDS_AFTER_NTLM_EVENT)
+
 			try{
-				 $events4648 = Get-WinEvent -ComputerName $ntlmObject.WorkstationName -FilterHashtable @{LogName="Security"; id=4648; StartTime=([datetime]($ntlmObject.Time)).AddSeconds($global:MAX_SECONDS_PRIOR_NTLM_EVENT); EndTime=([datetime]($ntlmObject.Time)).AddSeconds($global:MAX_SECONDS_AFTER_NTLM_EVENT)} -ErrorAction SilentlyContinue
+				 $events4648 = Get-WinEvent -ComputerName $ntlmObject.WorkstationName -FilterHashtable @{LogName="Security"; id=4648; StartTime=$timeOf4648PriorToNTLM; EndTime=$timeOf4648AfterNTLM} -ErrorAction SilentlyContinue
 
 				 foreach($event4648 in $events4648){
 					[xml]$xmlevent4648 = $event4648.ToXml()
@@ -605,46 +629,6 @@ function Invoke-DetectPTH(){
 			return $isConnected
 		}
 
-
-		# Make sure that the PCs has the same time zone.
-		# If not, run on the clients:
-		# 1) net time /set /y 
-		# OR
-		# 2) w32tm /config /syncfromflags:domhier /update
-		# net stop w32time 
-		# net start w32time
-		# You must run it as administrator
-		
-		# I am using "net time" because it doesn't use WinRM which requires the customer for more changes on the client
-		function Test-TimeOnRemoteComputer($remoteComputer){
-			$timeOnRemoteComputer = net time \\$remoteComputer
-			
-			if($timeOnRemoteComputer -eq $null){
-				Write-Warning "Failed to get time on $($remoteComputer)"
-			}
-			else{
-				$timeOnRemoteComputerFixed = [datetime]($timeOnRemoteComputer[0].Split("is").Trim()[-1])
-				$timeOnDc = net time
-				if($timeOnDc -eq $null){
-				
-					Write-Warning "Failed to get time on DC"
-				}
-				else{
-					$timeOnDcFixed = [datetime]($timeOnDc[0].Split("is").Trim()[-1])
-
-					if([math]::Abs(($timeOnDcFixed - $timeOnRemoteComputerFixed).TotalSeconds) -ge 60){
-						Write-Warning @"
-						Time differences (>= 1 minute) found:
-						$($timeOnRemoteComputer[0])
-						$($timeOnDc[0])
-"@
-						Write-Warning "It will affect the results"
-						Write-Warning "Please run as administrator'net time /set /y' on $($timeOnRemoteComputer[0])"
-					}
-				}
-			}
-		}
-
 		<# 
 		.Synopsis 
 		   Write-Log writes a message to a specified log file with the current time stamp. 
@@ -762,7 +746,7 @@ function Invoke-DetectPTH(){
 			{ 
 			} 
 		}
-		
+
 		function Write-LogWithMutex($Message, $LogFile)
 		{
 			$mtx = New-Object System.Threading.Mutex($false, "TestMutex")
@@ -776,19 +760,146 @@ function Invoke-DetectPTH(){
 				Write-Warning "Timed out acquiring mutex!"
 			}
 		}
+
+		#region TIME CHECKING
+		# TODO: Create atomic function to get the time from a remote machine because the checking itself can take time.
+		# Make sure that the PCs has the same time zone.
+		# If not, run on the clients:
+		# 1) net time /set /y 
+		# OR
+		# 2) w32tm /config /syncfromflags:domhier /update
+		# net stop w32time 
+		# net start w32time
+		# You must run it as administrator
 		
+		# I am using "net time" because it doesn't use WinRM which requires the customer for more changes on the client
+		function Test-TimeDiffBetweenRemoteComputerToDC($remoteComputer, $maxSecondsToWait=3){
+			$timeOnRemoteComputer = net time \\$remoteComputer
+			
+			if($timeOnRemoteComputer -eq $null){
+				Write-Warning "Failed to get time on $($remoteComputer)"
+			}
+			else{
+				try {
+					$timeOnRemoteComputerFixed = [datetime]($timeOnRemoteComputer[0].Split("is").Trim()[-1])
+					$timeOnDc = net time
+					if($timeOnDc -eq $null){
+					
+						Write-Warning "Failed to get time on DC"
+					}
+					else{
+						$timeOnDcFixed = [datetime]($timeOnDc[0].Split("is").Trim()[-1])
+	
+						if([math]::Abs(($timeOnDcFixed - $timeOnRemoteComputerFixed).TotalSeconds) -ge $maxSecondsToWait){
+							Write-Warning @"
+							Time differences (>= $($maxSecondsToWait)) found:
+							$($timeOnRemoteComputer[0])
+							$($timeOnDc[0])
+"@
+							Write-Warning "It will affect the results"
+							Write-Warning "Please run as administrator'net time /set /y' on $($timeOnRemoteComputer[0])"
+						}
+					}
+				}
+				catch {
+					Write-Warning "Failed to cast datetie of $($remoteComputer)"
+				}
+			}
+		}
+		
+		# ComputerATime - ComputerBTime
+
+		function Get-TimeDifferenceBetweenComputers($computerA, $computerB){
+			$computerATime = net time \\$computerA
+			$computerBTime = net time \\$computerB
+			$timeDiff = $null
+			if($computerATime -eq $null){ 
+				Write-Warning "Failed to get time on $($computerATime)"
+			}
+			else{
+				if($computerBTime -eq $null){ 
+					Write-Warning "Failed to get time on $($computerBTime)"
+				}
+				else{
+					try {
+						$computerATimeFixed = [datetime]($computerATime[0].Split("is").Trim()[-1])
+						$computerBTimeFixed = [datetime]($computerBTime[0].Split("is").Trim()[-1])
+					}
+					catch {
+						Write-Verbose "Problem with casting date time."
+						Write-Verbose "ComputerATimeFixed: $($computerATimeFixed)"
+						Write-Verbose "computerBTimeFixed: $($computerATimeFixed)"
+					}
+
+					$timeDiff = ($computerATimeFixed - $computerBTimeFixed).TotalSeconds
+					if([math]::Abs($timeDiff) -ge 300){
+						Write-Warning @"
+						Time differences (>= 5 minute) found:
+						$($computerATime)
+						$($computerBTime)
+"@
+						Write-Warning "It will affect the results"
+						Write-Warning "Please run as administrator'net time /set /y' on $($computerATime) and $($computerBTime)"
+					}
+					
+				}
+			}
+
+			return $timeDiff
+		}
+
+		function Get-CurrentTimeOnRemoteComputer($remoteComputer)
+		{
+			$computerTime = net time \\$remoteComputer
+			$computerTimeFixed = $null
+			if($computerTime -eq $null){ 
+				Write-Warning "Failed to get time on remote computer $($remoteComputer)"
+			}
+			else{
+				try {
+					$computerTimeFixed = [datetime]($computerTime[0].Split("is").Trim()[-1])
+				}
+				catch {	
+					Write-Warning "Failed to get fixed time from remote computer $($remoteComputer)"
+				}
+			}
+
+			return $computerTimeFixed
+		}
+
+		#endregion TIME CHECKING
 		function Detect-PTH($targetComputerName, $startTime, $logonTechnique, $UseNewCredentialsCheck){
-			Test-TimeOnRemoteComputer $targetComputerName
+			#Test-TimeDiffBetweenRemoteComputerToDC $targetComputerName
+			[System.Reflection.Assembly]::LoadWithPartialName("System.Diagnostics")
+			$stopwatch = new-object system.diagnostics.stopwatch
 			$previousNtmlEvent = $null
 			$sleepInterval = 2
+
+			$endTime = Get-CurrentTimeOnRemoteComputer $targetComputerName
+			if(-not $endTime){
+				try {
+					$hostname = hostname
+				}
+				catch {
+					Write-Verbose "Failed to get host name"
+				}
+
+				Write-Warning "Using the current time from the current host $($hostname)"
+				$endTime = (date)
+			}
+			
 			Write-Host
 			while($true){
 				
 				Start-Sleep -Seconds $sleepInterval
-				$endTime = (date)
-				# Adding 1 minute to cover gaps in the assign
+
+				$endTime = $endTime.AddSeconds($stopwatch.Elapsed.TotalSeconds)
+				$stopwatch.Reset() | Out-Null
+				$stopwatch.Start() | Out-Null
+				
 				$mili = $endTime.Millisecond * -1
 				$endTime = $endTime.AddMilliseconds($mili)
+				# Adding -2 seconds to cover gaps in the assign
 				$startTime = $startTime.AddSeconds(-2)
 				
 				if(Test-ComputerConnection $targetComputerName)
@@ -840,7 +951,7 @@ function Invoke-DetectPTH(){
 								$ntlmDetailsSb.AppendLine("$($global:Tab)[*] Suspicious NTLM logon" ) | Out-Null
 							}
 							else{
-								Test-TimeOnRemoteComputer $ntlmEventObject.WorkstationName
+								#Test-TimeDiffBetweenRemoteComputerToDC $ntlmEventObject.WorkstationName 60
 								$isNewCredUsed = $false
 								if($UseNewCredentialsCheck){
 									$isNewCredUsed = Is-LogonWithNewCredentials $ntlmEventObject ([ref]$ntlmDetailsSb)
@@ -1050,8 +1161,8 @@ function Invoke-DetectPTH(){
 "@
 
 	Write-Host $AsciiName -ForegroundColor Green
-	Write-Host "[*] Version 1.3"
-	Write-Host "[*] Last update: 31.12.2017"
+	Write-Host "[*] Version 1.4"
+	Write-Host "[*] Last update: 4.1.2018"
 	Write-Host "[*] To stop press Ctrl+Z and choose 'Yes' on the pop up Window. It will terminate all the opened threads.`n"
 	}
 	
