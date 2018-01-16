@@ -3,6 +3,9 @@ function Invoke-DetectPTH(){
 .SYNOPSIS
 	Using event viewer to detect suspicious privileged NTLM connections such as Pass-the-Hash
 	Author: Eviatar Gerzi (@g3rzi)
+	
+	Version 1.5: 16.1.2018
+		- Added check when computer name is NULL.
 
 	Version 1.4: 4.1.2018
 		- Added function to get the current time from a remote machine.
@@ -321,7 +324,7 @@ function Invoke-DetectPTH(){
 
 		function Get-HostIPAddress($computerName){
 			$ip = $null
-			if($computerName.EndsWith("$")){
+			if(($computerName -ne $null) -and $computerName.EndsWith("$")){
 				$computerName = $computerName.Remove($computerName.Length-1)
 			}
 			try{
@@ -1161,8 +1164,8 @@ function Invoke-DetectPTH(){
 "@
 
 	Write-Host $AsciiName -ForegroundColor Green
-	Write-Host "[*] Version 1.4"
-	Write-Host "[*] Last update: 4.1.2018"
+	Write-Host "[*] Version 1.5"
+	Write-Host "[*] Last update: 16.1.2018"
 	Write-Host "[*] To stop press Ctrl+Z and choose 'Yes' on the pop up Window. It will terminate all the opened threads.`n"
 	}
 	
