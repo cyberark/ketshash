@@ -1,9 +1,10 @@
 # Ketshash
 A little tool for detecting suspicious privileged NTLM connections, in particular Pass-The-Hash attack, based on event viewer logs.
 
-The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in the blog post: https://www.cyberark.com/threat-research-blog/detecting-pass-the-hash-with-windows-event-viewer
+The tool was published as part of the "Pass-The-Hash detection" research - more details on "Pass-The-Hash detection" are in the blog post:   
+https://www.cyberark.com/threat-research-blog/detecting-pass-the-hash-with-windows-event-viewer
 
-Full research can be found in the white paper:
+Full research can be found in the white paper:  
 https://www.cyberark.com/resource/pass-hash-detection-using-windows-events/
 
 # Demo
