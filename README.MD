@@ -6,6 +6,10 @@ The tool was published as part of the "Pass-The-Hash detection" research - more 
 Full research can be found in the white paper:
 https://www.cyberark.com/resource/pass-hash-detection-using-windows-events/
 
+# Demo
+[![IMAGE ALT TEXT HERE](https://i.imgur.com/42DnqHr.png)](https://fast.wistia.com/embed/iframe/e9px19i61p)
+
+
 # Requirements
 Account with the following privileges:
 - Access to remote machines' security event logs
