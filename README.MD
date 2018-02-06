@@ -54,24 +54,30 @@ On Windows 10 and Server 2016, enabling "kernel object auditing" will provide mo
 
 
 ##### Example (recommended):
-`Invoke-DetectPTH -TargetComputers "MARS-7" -LogFile "C:\tmp\log.txt"`
+```powershell
+Invoke-DetectPTH -TargetComputers "MARS-7" -LogFile "C:\tmp\log.txt"
+```
 ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot2.PNG?token=ALcWEKLGgMtw2Io8afFyo7gm8d8ysSXXks5aQ8ITwA%3D%3D)
 
 
 ##### Example:
-`Invoke-DetectPTH -TargetComputers "ComputerName" -StartTime ([datetime]"2017-12-14 12:50:00 PM") -LogFile "C:\tmp\log.txt" -UseKerberosCheck -UseNewCredentialsCheck`
+```powershell
+Invoke-DetectPTH -TargetComputers "ComputerName" -StartTime ([datetime]"2017-12-14 12:50:00 PM") -LogFile "C:\tmp\log.txt" -UseKerberosCheck -UseNewCredentialsCheck
+```
 
 ![alt text](https://raw.githubusercontent.com/cyberark/ketshash/master/Media/KetshashScreenshot.PNG?token=ALcWEG05x1Vo_c5Ac6mLwzHnYlDzp41Qks5aQO5NwA%3D%3D)
 
  
 ## Debugging
 Because it uses threads, it is not possible to debug the script block of the main function.
-A workaround can be by using Invoke-Command before the Detect-PTHMultithreaded:  
-`Invoke-Command -ScriptBlock $detectPTHScriptBlock -ArgumentList $TargetComputers, $startTime, $LogFile, $UseKerberosCheck, $UseNewCredentialsCheck, $MaxHoursOfLegitLogonPriorToNTLMEvent`
-
+A workaround can be by using `Invoke-Command` before the `Detect-PTHMultithreaded`:  
+```powershell
+Invoke-Command -ScriptBlock $detectPTHScriptBlock -ArgumentList $TargetComputers, $startTime, $LogFile, $UseKerberosCheck, $UseNewCredentialsCheck, $MaxHoursOfLegitLogonPriorToNTLMEvent`
+```
 Detect only one target computer:  
-`Invoke-DetectPTH -TargetComputers "<computer_name>" ...`
-
+```powershell
+Invoke-DetectPTH -TargetComputers "<computer_name>" ...
+```
 Change the `$TargetComputer` to be `[string]` instead of `[array]`.
 This way it is possible to use breakpoints inside the script block of the main function.
 
