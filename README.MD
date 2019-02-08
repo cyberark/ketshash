@@ -5,8 +5,8 @@ The tool was published as part of the "Pass-The-Hash detection" research - more 
 https://www.cyberark.com/threat-research-blog/detecting-pass-the-hash-with-windows-event-viewer
 
 Full research can be found in the white paper:  
-https://www.cyberark.com/resource/pass-hash-detection-using-windows-events/
-
+https://www.cyberark.com/resource/pass-hash-detection-using-windows-events/  
+(direct link: http://lp.cyberark.com/rs/cyberarksoftware/images/wp-Labs-Pass-the-hash-research-01312018.pdf)
 # Demo
 [![IMAGE ALT TEXT HERE](https://i.imgur.com/42DnqHr.png)](https://fast.wistia.com/embed/iframe/e9px19i61p)
 
