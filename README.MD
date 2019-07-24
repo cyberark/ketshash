@@ -1,3 +1,6 @@
+[![GitHub release][release-img]][release]
+[![License][license-img]][license]
+
 # Ketshash
 A little tool for detecting suspicious privileged NTLM connections, in particular Pass-The-Hash attack, based on event viewer logs.
 
@@ -83,3 +86,9 @@ This way it is possible to use breakpoints inside the script block of the main f
 
 # References
 For more comments and questions, you can contact Eviatar Gerzi (@g3rzi) and CyberArk Labs.
+
+[release-img]: https://img.shields.io/github/release/cyberark/ketshash.svg
+[release]: https://github.com/cyberark/ketshash/releases
+
+[license-img]: https://img.shields.io/github/license/cyberark/ketshash.svg
+[license]: https://github.com/cyberark/ketshash/blob/master/LICENSE
